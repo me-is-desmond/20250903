@@ -1,0 +1,39 @@
+name: Explore VM
+
+on: [push]
+
+jobs:
+  explore:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: System Info
+        run: |
+          echo "=== SYSTEM INFORMATION ==="
+          echo "OS: $(uname -s)"
+          echo "Architecture: $(uname -m)"
+          echo "Kernel: $(uname -r)"
+          echo "CPU cores: $(nproc)"
+          echo "Memory: $(free -h | grep Mem | awk '{print $2}')"
+          echo "Disk space:"
+          df -h
+          
+      - name: Pre-installed Software
+        run: |
+          echo "=== PRE-INSTALLED TOOLS ==="
+          git --version
+          python3 --version
+          node --version || echo "Node.js not installed"
+          java -version || echo "Java not installed"
+          docker --version || echo "Docker not installed"
+          
+      - name: Current Workspace
+        run: |
+          echo "=== WORKSPACE ==="
+          echo "Working directory: $(pwd)"
+          echo "Contents:"
+          ls -la
+          echo "Git info:"
+          git log --oneline -n 3
+
